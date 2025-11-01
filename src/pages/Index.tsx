@@ -4,6 +4,7 @@ import { StockInput } from "@/components/StockInput";
 import { StockCharts } from "@/components/StockCharts";
 import { StockMetrics } from "@/components/StockMetrics";
 import { FuturePrediction } from "@/components/FuturePrediction";
+import { StockDataTable } from "@/components/StockDataTable";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -57,6 +58,10 @@ const Index = () => {
         
         {stockData && (
           <>
+            <StockDataTable 
+              symbol={stockData.symbol}
+              historicalData={stockData.historicalData}
+            />
             <StockCharts 
               symbol={stockData.symbol}
               historicalData={stockData.historicalData}
