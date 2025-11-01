@@ -1,0 +1,4 @@
+project_id = "vuvuecmknttilvohexrj"
+
+[functions.stock-prediction]
+verify_jwt = false
