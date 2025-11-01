@@ -9,7 +9,9 @@ from datetime import datetime
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # Load Trained Model
-model = load_model(r"C:\Users\harsh\Downloads\Stock_Market_Prediction_ML\Stock Predictions Model.keras")
+import os
+model_path = os.path.join(os.path.dirname(__file__), "Stock_Predictions_Model.keras")
+model = load_model(model_path)
 
 # Streamlit App Setup
 st.set_page_config(page_title='Stock Market Predictor', layout='wide')
@@ -17,8 +19,17 @@ st.header('📈 Stock Market Predictor')
 
 # User Input
 stock = st.text_input('Enter Stock Symbol', 'GOOG')
-start = '2012-01-01'
-end = datetime.today().strftime('%Y-%m-%d')
+
+# Fixed date range from 2012
+START_DATE = '2012-01-01'
+end_date = datetime.today().strftime('%Y-%m-%d')
+
+# Info message about date range
+st.info(f"Data range: {START_DATE} to {end_date}")
+
+# Fetch data with fixed start date
+start = START_DATE
+end = end_date
 
 # Fetch Data
 data = yf.download(stock, start, end)

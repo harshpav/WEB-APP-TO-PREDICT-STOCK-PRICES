@@ -20,6 +20,7 @@
 
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- Use a relative path here to avoid build issues when the project root differs on CI/CD providers -->
+    <script type="module" src="src/main.tsx"></script>
   </body>
 </html>

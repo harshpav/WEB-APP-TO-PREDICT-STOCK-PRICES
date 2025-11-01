@@ -4,9 +4,17 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 from datetime import datetime
 
-start = '2012-01-01'
-end = datetime.today().strftime('%Y-%m-%d')
-stock = 'GOOG'
+# Fixed start date for consistent historical data
+START_DATE = '2012-01-01'
+END_DATE = datetime.today().strftime('%Y-%m-%d')
+STOCK_SYMBOL = 'GOOG'
+
+print(f"Fetching data from {START_DATE} to {END_DATE}")
+
+# Use the constants
+start = START_DATE
+end = END_DATE
+stock = STOCK_SYMBOL
 
 data = yf.download(stock, start, end)
 data.reset_index(inplace=True)
