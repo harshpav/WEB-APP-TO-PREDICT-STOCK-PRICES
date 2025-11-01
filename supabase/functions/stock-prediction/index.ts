@@ -34,19 +34,20 @@ serve(async (req) => {
         messages: [
           { 
             role: "system", 
-            content: `You are a stock market data generator. Generate realistic stock prediction data for the given symbol.
+            content: `You are a stock market data generator. Generate realistic stock prediction data for the given symbol from 2012-01-01 to today's date (${new Date().toISOString().split('T')[0]}).
             Return ONLY a valid JSON object with this exact structure (no markdown, no explanations):
             {
               "symbol": "SYMBOL",
-              "historicalData": [{"date": "2024-01-01", "open": 150.0, "high": 152.5, "low": 149.0, "close": 151.5, "volume": 1500000}, ...] (20 data points with realistic stock movements),
-              "predictions": [{"index": 1, "actual": 150.5, "predicted": 151.2}, ...] (20 data points),
+              "historicalData": [{"date": "2012-01-01", "open": 150.0, "high": 152.5, "low": 149.0, "close": 151.5, "volume": 1500000}, ...] (generate data for each month from 2012 to today - approximately 150+ data points with realistic stock price progression over the years),
+              "predictions": [{"index": 1, "actual": 150.5, "predicted": 151.2}, ...] (last 50 data points for prediction comparison),
               "metrics": {"rmse": 2.5, "mae": 1.8, "r2": 0.95},
-              "futurePredictions": [155.5, 156.2, ...] (30 numbers representing future prices)
-            }` 
+              "futurePredictions": [155.5, 156.2, ...] (30 numbers representing future daily prices)
+            }
+            Make sure the stock prices show realistic growth/decline patterns over the years. For example, GOOG should start around $300-400 in 2012 and grow to current levels around $170-180.` 
           },
           { 
             role: "user", 
-            content: `Generate stock prediction data for ${symbol}. Make the prices realistic for this stock. Return only the JSON object, no other text.` 
+            content: `Generate stock prediction data for ${symbol} from 2012-01-01 to ${new Date().toISOString().split('T')[0]}. Include monthly data points showing realistic price evolution over the years. Return only the JSON object, no other text.` 
           }
         ],
         temperature: 0.7,
