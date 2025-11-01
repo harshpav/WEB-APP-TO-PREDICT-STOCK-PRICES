@@ -1,3 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.venv-py311/
+ENV/
+env.bak/
+venv.bak/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Virtual environment
+.env
+.venv
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+
+# C extensions
+*.so
+
+# Unit test / coverage
+.coverage
+.pytest_cache/
+coverage.xml
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Node
+node_modules/
+npm-debug.log*
+pnpm-lock.yaml
+yarn.lock
+
+# Vite
+dist/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Model artifacts
+public/Stock_Predictions_Model.keras
 node_modules/
 dist/
 .vs/
