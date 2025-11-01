@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: stock-predictor-api
+    runtime: docker
+    region: ohio
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: MODEL_URL
+        sync: false
+    buildFilter:
+      paths:
+      - api.py
+      - Dockerfile
+      - requirements.txt
+      - start.sh
