@@ -1,11 +1,13 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import numpy as np
+import pandas as pd
 from keras.models import load_model
 import yfinance as yf
 from datetime import datetime, timedelta
 import os
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import uvicorn
 
 app = FastAPI(title="Stock Price Predictor API")
@@ -19,8 +21,8 @@ except Exception as e:
     model = None
 
 class StockRequest(BaseModel):
-    symbol: str
-    days_to_predict: int = 30
+    symbol: str = Field(..., description="Stock symbol (e.g., 'GOOG', 'AAPL')")
+    days_to_predict: int = Field(default=30, ge=1, le=365, description="Number of days to predict (1-365)")
 
 class PredictionResponse(BaseModel):
     symbol: str
@@ -46,7 +48,12 @@ def prepare_stock_data(symbol: str, start_date: str = '2012-01-01'):
         data_test_full = pd.concat([past_100_days, data_test], ignore_index=True)
         data_test_scale = scaler.fit_transform(data_test_full.values.reshape(-1,1))
         
-        return data_test_scale, scaler
+        return data_test_scale, scaler, data_test
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error preparing data for symbol {symbol}: {str(e)}"
+        )
 
 def predict_future(model, last_100_days, scaler, n_days=30):
     """Predict next n days of prices."""
@@ -77,7 +84,7 @@ def predict_stock(request: StockRequest):
         
     try:
         # Prepare data
-        data_scale, scaler = prepare_stock_data(request.symbol)
+        data_scale, scaler, test_data = prepare_stock_data(request.symbol)
         last_100_days = data_scale[-100:]
         
         # Generate predictions
@@ -87,6 +94,14 @@ def predict_stock(request: StockRequest):
             scaler=scaler,
             n_days=request.days_to_predict
         )
+        
+        # Calculate metrics using recent test data
+        y_true = test_data.values[-min(len(test_data), 30):]  # Last 30 days or less
+        y_pred = predictions[:min(len(y_true), len(predictions))]
+        
+        rmse = float(np.sqrt(mean_squared_error(y_true, y_pred))) if len(y_true) > 0 else None
+        mae = float(mean_absolute_error(y_true, y_pred)) if len(y_true) > 0 else None
+        r2 = float(r2_score(y_true, y_pred)) if len(y_true) > 0 else None
         
         # Generate future dates
         today = datetime.today()
@@ -98,7 +113,10 @@ def predict_stock(request: StockRequest):
         return PredictionResponse(
             symbol=request.symbol,
             predictions=predictions.flatten().tolist(),
-            dates=future_dates
+            dates=future_dates,
+            rmse=rmse,
+            mae=mae,
+            r2=r2
         )
         
     except Exception as e:
