@@ -38,7 +38,7 @@ serve(async (req) => {
             Return ONLY a valid JSON object with this exact structure (no markdown, no explanations):
             {
               "symbol": "SYMBOL",
-              "historicalData": [{"date": "2024-01-01", "price": 150.5}, ...] (20 data points),
+              "historicalData": [{"date": "2024-01-01", "open": 150.0, "high": 152.5, "low": 149.0, "close": 151.5, "volume": 1500000}, ...] (20 data points with realistic stock movements),
               "predictions": [{"index": 1, "actual": 150.5, "predicted": 151.2}, ...] (20 data points),
               "metrics": {"rmse": 2.5, "mae": 1.8, "r2": 0.95},
               "futurePredictions": [155.5, 156.2, ...] (30 numbers representing future prices)

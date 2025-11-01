@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 interface StockChartsProps {
   symbol: string;
-  historicalData: any[];
+  historicalData: Array<{ date: string; open: number; high: number; low: number; close: number; volume: number }>;
   predictions: any[];
 }
 
@@ -31,7 +31,7 @@ export const StockCharts = ({ symbol, historicalData, predictions }: StockCharts
               <Legend />
               <Line 
                 type="monotone" 
-                dataKey="price" 
+                dataKey="close" 
                 stroke="hsl(var(--primary))" 
                 strokeWidth={2}
                 dot={false}
