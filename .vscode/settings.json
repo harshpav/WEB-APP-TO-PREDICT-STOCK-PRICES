@@ -1,0 +1,15 @@
+{
+  // Disable YAML validation in this workspace to reduce false-positive warnings
+  // about workflow secret context access in the editor. This only affects
+  // local diagnostics; CI behavior is unchanged.
+  "yaml.validate": false,
+
+  // Try to reduce noise from GitHub Actions / workflow validators. Unknown
+  // settings are ignored by VS Code, but some extensions read these keys.
+  "github.actions.validation": false,
+  "github.workflowValidation": false,
+  "github.workflow.lint": false,
+
+  // Keep basic editor preferences for the workspace
+  "editor.formatOnSave": true
+}
